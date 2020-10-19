@@ -1,14 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, Button } from "react-native";
-import BlogContext from '../context/BlogContext';
+import { Context as BlogContext } from '../context/BlogContext';
 
 const IndexScreen = () => {
-  const {blogPosts, addBlogPost} = useContext(BlogContext);
-  const [term, setTerm] = useState('111');
+  const { state: blogPosts, addPost } = useContext(BlogContext);
 
   useEffect(() => {
-    console.log('open IndexScreen', term);
-    console.log(blogPosts);
+    console.log('open IndexScreen');
+    console.log(blogPosts, addPost);
   }, []);
 
   return (
@@ -16,7 +15,7 @@ const IndexScreen = () => {
       <Text>Index Screen</Text>
       <Button
         title="Add Post"
-        onPress={addBlogPost}
+        onPress={addPost}
       />
       <FlatList
         data={blogPosts}
