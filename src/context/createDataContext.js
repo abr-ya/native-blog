@@ -9,7 +9,6 @@ export default (reducer, actions, initialState) => {
     // actions === { addPost: (dispatch) => return () => {}}
     const boundActions = {};
     Object.keys(actions).forEach(key => {
-      console.log(key);
       boundActions[key] = actions[key](dispatch);
     });
 

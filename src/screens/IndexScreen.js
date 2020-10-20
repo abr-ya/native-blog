@@ -1,17 +1,27 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, Button } from "react-native";
+import { StyleSheet, View, Text, FlatList, Button, TouchableOpacity } from "react-native";
 import { Context as BlogContext } from '../context/BlogContext';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const IndexScreen = () => {
-  const { state: blogPosts, addPost } = useContext(BlogContext);
+const IndexScreen = ({ navigation }) => {
+  const { state: blogPosts, addPost, delPost } = useContext(BlogContext);
 
   useEffect(() => {
     console.log('open IndexScreen');
-    console.log(blogPosts, addPost);
+    //console.log(blogPosts, addPost, delPost);
   }, []);
 
-  return (
+  const delHandler = (id) => {
+    console.log('del:', id);
+    delPost(id);
+  };
+
+  const navHandler = (id) => {
+    console.log('nav:', id);
+    navigation.navigate('Item', { id });
+  };
+
+  return ( 
     <View style={styles.view} >
       <Text>Index Screen</Text>
       <Button
@@ -22,10 +32,14 @@ const IndexScreen = () => {
         data={blogPosts}
         keyExtractor={item => item.title}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={styles.title}>{item.title}</Text>
-            <MaterialIcons name="delete-forever" color="black" style={styles.icon} />
-          </View>
+          <TouchableOpacity onPress={() => navHandler(item.id)}>
+            <View style={styles.row}>
+              <Text style={styles.title}>{item.title} - {item.id}</Text>
+              <TouchableOpacity onPress={() => delHandler(item.id)} >
+                <MaterialIcons name="delete-forever" color="black" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>

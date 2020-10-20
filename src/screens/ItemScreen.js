@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { Context as BlogContext } from '../context/BlogContext';
 
-const ItemScreen = () => {
-  const [term, setTerm] = useState('111');
+const ItemScreen = ({ navigation }) => {
+  const { state: blogPosts } = useContext(BlogContext);
 
   useEffect(() => {
-    console.log('open ItemScreen', term);
+    const id = navigation.getParam('id');
+    console.log('open ItemScreen', id);
+    const blogPost = blogPosts.find(post => post.id === id);
+    console.log(blogPost);
   }, []);
 
   return (
     <View style={styles.view} >
-      <Text>Index Screen</Text>
+      <Text>Item Screen</Text>
     </View>
   );
 };
