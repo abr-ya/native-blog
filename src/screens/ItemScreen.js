@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Context as BlogContext } from '../context/BlogContext';
+import { AntDesign } from '@expo/vector-icons';
 
 const ItemScreen = ({ navigation }) => {
   const { state: blogPosts } = useContext(BlogContext);
@@ -14,21 +15,40 @@ const ItemScreen = ({ navigation }) => {
     setLoading(false);
   }, []);
 
-  return (
-    <View style={styles.view} >
-      <Text>
-        {loading
-          ? '... loading ...'
-          : post.title
-        }
-      </Text>
-    </View>
-  );
+  return loading
+    ? (
+      <View style={styles.view} >
+        <Text>... loading ...</Text>
+      </View> 
+    ) : (
+      <View style={styles.view} >
+        <Text style={styles.header}>{post.title}</Text>
+        <Text>{post.content}</Text>
+      </View>
+    );
 };
+
+ItemScreen.navigationOptions = ({navigation}) => ({
+  headerRight: () => (
+    <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
+      <AntDesign name="edit" style={styles.iconTop} />
+    </TouchableOpacity>  
+  ),
+});
 
 const styles = StyleSheet.create({
   view: {
     flex: 1,
+    margin: 10,
+  },
+  header: {
+    fontSize: 24,
+  },
+  iconTop: {
+    fontSize: 30,
+    color: 'blue',
+    margin: 20,
+    marginBottom: 15,
   },
 });
 

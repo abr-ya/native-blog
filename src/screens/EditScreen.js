@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 const EditScreen = () => {
 
@@ -9,7 +9,7 @@ const EditScreen = () => {
 
   return (
     <View style={styles.view} >
-      <Text>Edit Screen</Text>
+      <Text style={styles.header}>Edit Screen</Text>
     </View>
   );
 };
@@ -17,6 +17,9 @@ const EditScreen = () => {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
+  },
+  header: {
+    fontSize: 24,
   },
 });
 

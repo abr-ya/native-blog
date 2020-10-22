@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, FlatList, TouchableOpacity } from "react-native";
 import { Context as BlogContext } from '../context/BlogContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -33,7 +33,7 @@ const IndexScreen = ({ navigation }) => {
             <View style={styles.row}>
               <Text style={styles.title}>{item.title} - {item.id}</Text>
               <TouchableOpacity onPress={() => delHandler(item.id)} >
-                <MaterialIcons name="delete-forever" color="black" style={styles.icon} />
+                <MaterialIcons name="delete-forever" style={styles.iconDel} />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -43,20 +43,13 @@ const IndexScreen = ({ navigation }) => {
   );
 };
 
-IndexScreen.navigationOptions = ({navigation}) => {
-  return {
-    headerRight: () => (
-      <TouchableOpacity onPress={() => navigation.navigate('New')}>
-        <AntDesign
-          name="pluscircleo"
-          size={30}
-          color="black"
-          style={{ margin: 20 }}
-        />
-      </TouchableOpacity>  
-    ),
-  };
-};
+IndexScreen.navigationOptions = ({navigation}) => ({
+  headerRight: () => (
+    <TouchableOpacity onPress={() => navigation.navigate('New')}>
+      <AntDesign name="pluscircleo" style={styles.iconTop} />
+    </TouchableOpacity>  
+  ),
+});
 
 const styles = StyleSheet.create({
   view: {
@@ -77,8 +70,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
   },
-  icon: {
+  iconTop: {
     fontSize: 30,
+    color: 'blue',
+    margin: 20,
+  },
+  iconDel: {
+    fontSize: 34,
+    color: 'blue',
   },
 });
 
