@@ -5,11 +5,11 @@ import { AntDesign } from '@expo/vector-icons';
 
 const ItemScreen = ({ navigation }) => {
   const { state: blogPosts } = useContext(BlogContext);
+  const id = navigation.getParam('id'); // или в useEffect?
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
 
   useEffect(() => {
-    const id = navigation.getParam('id');
     console.log('open ItemScreen', id);
     setPost(blogPosts.find(post => post.id === id));
     setLoading(false);

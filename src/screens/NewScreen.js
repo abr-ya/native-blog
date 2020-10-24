@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import PostForm from "../components/PostForm";
 import { Context as BlogContext } from '../context/BlogContext';
 
 const NewScreen = ({ navigation }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const { addPost } = useContext(BlogContext);
 
   useEffect(() => {
     console.log('open NewScreen');
   }, []);
 
-  const addButtonHandler = () => {
+  const addButtonHandler = (title, content) => {
     console.log('add', title, content);
     const callback = () => navigation.navigate('Index'); // можно добавить асинх.
     addPost(title, content, callback);
@@ -22,8 +20,8 @@ const NewScreen = ({ navigation }) => {
     <View style={styles.view}>
       <Text style={styles.header}>New Post</Text>
       <PostForm
-        title={{ label: 'Enter Title:', value: title, setter: setTitle }}
-        content={{ label: 'Enter Content:', value: content, setter: setContent }}
+        title={{ label: 'Enter Title:' }}
+        content={{ label: 'Enter Content:', value: '' }}
         button={{ title: 'Add Blog Post', handler: addButtonHandler }}
       />
     </View>

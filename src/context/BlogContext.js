@@ -8,6 +8,11 @@ const BlogReducer = (state, action) => {
         title: action.payload.title,
         content: action.payload.content,
       }];
+    case 'edit_post':
+    // обновленный пост в конец
+    // return [...state.filter(item => item.id !== action.payload.id), action.payload];
+      // без смены места
+      return state.map(item => (item.id === action.payload.id ? action.payload : item));
     case 'del_post':
       return state.filter(post => post.id !== action.payload);
     default:
@@ -24,7 +29,13 @@ const start = [
 const addPost = (dispatch) => (
   (title, content, callback) => {
     dispatch({ type: 'add_post', payload: {title, content} });
-    callback();
+    if (callback) callback();
+  } 
+);
+const editPost = (dispatch) => (
+  (id, title, content, callback) => {
+    dispatch({ type: 'edit_post', payload: {id, title, content} });
+    if (callback) callback();
   } 
 );
 const delPost = (dispatch) => (
@@ -33,6 +44,6 @@ const delPost = (dispatch) => (
 
 export const { Context, Provider } = createDataContext(
   BlogReducer,
-  { addPost, delPost },
+  { addPost, editPost, delPost },
   start,
 );
