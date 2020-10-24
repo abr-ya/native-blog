@@ -1,31 +1,19 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Context as BlogContext } from '../context/BlogContext';
 import { AntDesign } from '@expo/vector-icons';
 
 const ItemScreen = ({ navigation }) => {
   const { state: blogPosts } = useContext(BlogContext);
-  const id = navigation.getParam('id'); // или в useEffect?
-  const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState({});
+  const id = navigation.getParam('id');
+  const post = blogPosts.find(post => post.id === id);
 
-  useEffect(() => {
-    console.log('open ItemScreen', id);
-    setPost(blogPosts.find(post => post.id === id));
-    setLoading(false);
-  }, []);
-
-  return loading
-    ? (
-      <View style={styles.view} >
-        <Text>... loading ...</Text>
-      </View> 
-    ) : (
-      <View style={styles.view} >
-        <Text style={styles.header}>{post.title}</Text>
-        <Text>{post.content}</Text>
-      </View>
-    );
+  return (
+    <View style={styles.view} >
+      <Text style={styles.header}>{post.title}</Text>
+      <Text>{post.content}</Text>
+    </View>
+  );
 };
 
 ItemScreen.navigationOptions = ({navigation}) => ({

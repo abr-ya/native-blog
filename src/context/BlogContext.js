@@ -1,13 +1,17 @@
 import createDataContext from './createDataContext';
+import jsonServer from '../api/jsonserver';
+
+const getPosts = dispatch => {
+  return async() => {
+    const response = await jsonServer.get('/blogposts');
+    dispatch({ type: 'get_posts', payload: response.data })
+  };
+};
 
 const BlogReducer = (state, action) => {
   switch (action.type) {
-    case 'add_post':
-      return [...state, {
-        id: Math.floor(Math.random() * 99999),
-        title: action.payload.title,
-        content: action.payload.content,
-      }];
+    case 'get_posts':
+      return action.payload;
     case 'edit_post':
     // обновленный пост в конец
     // return [...state.filter(item => item.id !== action.payload.id), action.payload];
@@ -20,30 +24,36 @@ const BlogReducer = (state, action) => {
   }
 };
 
-const start = [
-  { id: 1, title: 'Blog Post #1', content: 'Content of test post #1.' }, 
-  { id: 2, title: 'Blog Post #2' },
-  { id: 3, title: 'Blog Post #3' },
-];
+// const start = [
+//   { id: 1, title: 'Blog Post #1', content: 'Content of test post #1.' }, 
+//   { id: 2, title: 'Blog Post #2' },
+//   { id: 3, title: 'Blog Post #3' },
+// ];
 
-const addPost = (dispatch) => (
-  (title, content, callback) => {
-    dispatch({ type: 'add_post', payload: {title, content} });
+const addPost = () => (
+  async (title, content, callback) => {
+    await jsonServer.post('/blogposts', { title, content });
     if (callback) callback();
   } 
 );
 const editPost = (dispatch) => (
-  (id, title, content, callback) => {
-    dispatch({ type: 'edit_post', payload: {id, title, content} });
+  async (id, title, content, callback) => {
+    await jsonServer.put(`/blogposts/${id}`, { title, content });
+    // и обновляем контекст
+    dispatch({ type: 'edit_post', payload: { id, title, content } });
     if (callback) callback();
   } 
 );
 const delPost = (dispatch) => (
-  (id) => dispatch({ type: 'del_post', payload: id })
+  async (id) => {
+    await jsonServer.delete(`/blogposts/${id}`);
+    // удаляем из контекса - не перезапрашиваем
+    dispatch({ type: 'del_post', payload: id });
+  } 
 );
 
 export const { Context, Provider } = createDataContext(
   BlogReducer,
-  { addPost, editPost, delPost },
-  start,
+  { getPosts, addPost, editPost, delPost },
+  []
 );

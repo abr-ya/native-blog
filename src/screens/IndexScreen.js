@@ -5,11 +5,23 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 const IndexScreen = ({ navigation }) => {
-  const { state: blogPosts, delPost } = useContext(BlogContext);
+  const { state: blogPosts, getPosts, delPost } = useContext(BlogContext);
 
   useEffect(() => {
-    console.log('open IndexScreen');
-    //console.log(blogPosts, delPost);
+    console.log('IndexScreen open');
+    getPosts();
+
+    const listener = navigation.addListener(
+      'didFocus',
+      () => {
+        console.log('IndexScreen didFocus');
+        getPosts();
+      }
+    );
+
+    return () => {
+      listener.remove();
+    };
   }, []);
 
   const delHandler = (id) => {
@@ -18,7 +30,6 @@ const IndexScreen = ({ navigation }) => {
   };
 
   const navHandler = (id) => {
-    console.log('nav:', id);
     navigation.navigate('Item', { id });
   };
 
